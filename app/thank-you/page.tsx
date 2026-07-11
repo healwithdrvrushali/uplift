@@ -118,17 +118,16 @@ export default function ThankYouPage() {
         }
         .fade-in-up-1 { animation: fadeInUp 0.8s ease-out forwards; }
         .fade-in-up-2 { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
-        
+        .fade-in-up-3 { animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; }
+        .fade-in-up-4 { animation: fadeInUp 0.8s ease-out 0.6s forwards; opacity: 0; }
+        .fade-in-up-5 { animation: fadeInUp 0.8s ease-out 0.8s forwards; opacity: 0; }
         .scale-in { animation: scaleIn 0.6s ease-out 0.3s forwards; opacity: 0; }
         .sparkle-1 { animation: sparkle 2s ease-in-out infinite; }
         .sparkle-2 { animation: sparkle 2s ease-in-out 0.5s infinite; }
-        
-        
-       
       `}</style>
 
       <div
-        className="w-full min-h-screen relative"
+        className="w-full min-h-screen relative flex flex-col"
         style={{
           background:
             "linear-gradient(180deg, #FDF6F0 0%, #F9ECF5 15%, #F0E8FA 30%, #EAE2F8 50%, #E8E0F5 65%, #F5EAF2 80%, #EDE5F8 90%, #F0E8FA 100%)",
@@ -140,14 +139,15 @@ export default function ThankYouPage() {
           style={{ zIndex: 0 }}
         />
 
-        <div className="relative z-10 w-full max-w-lg mx-auto px-6 pt-12 pb-8 flex flex-col items-center">
-          {/* Thank You Title - Large cursive like reference */}
+        {/* Main content - full width on desktop, constrained on mobile */}
+        <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center px-6 py-12">
+          {/* Thank You Title */}
           <h1
             className="text-center fade-in-up-1"
             style={{
               fontFamily: "'Charm', cursive",
               fontWeight: 700,
-              fontSize: "3rem",
+              fontSize: "clamp(3rem, 5vw, 4.5rem)",
               color: "#362E69",
               lineHeight: 1.1,
               textShadow: "0 4px 20px rgba(239,154,126,0.2)",
@@ -164,7 +164,7 @@ export default function ThankYouPage() {
             style={{
               fontFamily: "'Outfit', sans-serif",
               fontWeight: 600,
-              fontSize: "1.3rem",
+              fontSize: "clamp(1.3rem, 2.5vw, 2rem)",
               color: "#362E69",
               marginBottom: "1.2rem",
             }}
@@ -174,25 +174,23 @@ export default function ThankYouPage() {
 
           {/* Decorative line */}
           <div
-            className="w-28 h-0.5 mx-auto fade-in-up-2"
+            className="w-28 md:w-40 h-0.5 mx-auto fade-in-up-2"
             style={{
               background: "linear-gradient(90deg, transparent, #B4B1D5, transparent)",
-              marginBottom: "1rem",
+              marginBottom: "1.5rem",
             }}
           />
 
-          {/* Checkmark Circle - Large like reference */}
+          {/* Checkmark Circle */}
           <div className="relative scale-in" style={{ marginBottom: "2rem" }}>
-            {/* Sparkle stars around the circle */}
-            <span className="absolute -top-6 right-0 text-[#c8963e] sparkle-2 float-star-2" style={{ fontSize: "0.8rem" }}>✦</span>
-            <span className="absolute top-4 -right-8 text-[#c8963e] sparkle-3 float-star-3" style={{ fontSize: "0.9rem" }}>✦</span>
-            <span className="absolute top-0 -left-8 text-[#c8963e] sparkle-4 float-star-4" style={{ fontSize: "0.7rem" }}>✦</span>
-            <span className="absolute bottom-6 -left-6 text-[#c8963e] sparkle-2 float-star-3" style={{ fontSize: "0.6rem" }}>✦</span>
-            <span className="absolute bottom-4 -right-6 text-[#c8963e] sparkle-1 float-star-4" style={{ fontSize: "0.8rem" }}>✦</span>
+            <span className="absolute -top-6 right-0 text-[#c8963e] sparkle-2" style={{ fontSize: "0.8rem" }}>✦</span>
+            <span className="absolute top-4 -right-8 text-[#c8963e] sparkle-1" style={{ fontSize: "0.9rem" }}>✦</span>
+            <span className="absolute top-0 -left-8 text-[#c8963e] sparkle-2" style={{ fontSize: "0.7rem" }}>✦</span>
+            <span className="absolute bottom-6 -left-6 text-[#c8963e] sparkle-2" style={{ fontSize: "0.6rem" }}>✦</span>
+            <span className="absolute bottom-4 -right-6 text-[#c8963e] sparkle-1" style={{ fontSize: "0.8rem" }}>✦</span>
 
-            {/* Gold circle with checkmark - larger */}
             <div
-              className="w-32 h-32 rounded-full flex items-center justify-center"
+              className="w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center"
               style={{
                 background: "linear-gradient(135deg, #c8963e 0%, #e8c170 40%, #d4a84e 70%, #c8963e 100%)",
                 boxShadow: "0 12px 40px rgba(200,150,62,0.3), 0 4px 16px rgba(200,150,62,0.15)",
@@ -207,14 +205,12 @@ export default function ThankYouPage() {
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                className="md:w-[70px] md:h-[70px]"
               >
                 <path d="M5 13l4 4L19 7" />
               </svg>
             </div>
           </div>
-
-          {/* Small decorative stars below circle */}
-         
 
           {/* Main Message */}
           <div className="text-center fade-in-up-3" style={{ marginBottom: "0.8rem" }}>
@@ -222,7 +218,7 @@ export default function ThankYouPage() {
               style={{
                 fontFamily: "'Outfit', sans-serif",
                 fontWeight: 700,
-                fontSize: "1.5rem",
+                fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)",
                 color: "#362E69",
                 lineHeight: 1.3,
                 marginBottom: "0.3rem",
@@ -234,10 +230,9 @@ export default function ThankYouPage() {
               style={{
                 fontFamily: "'Outfit', sans-serif",
                 fontWeight: 700,
-                fontSize: "1.4rem",
+                fontSize: "clamp(1.4rem, 2.3vw, 2rem)",
                 color: "#c8963e",
                 lineHeight: 1.3,
-                
               }}
             >
               to Your Transformation!
@@ -250,10 +245,11 @@ export default function ThankYouPage() {
             style={{
               fontFamily: "'Outfit', sans-serif",
               fontWeight: 400,
-              fontSize: "0.95rem",
+              fontSize: "clamp(0.95rem, 1.5vw, 1.2rem)",
               color: "#4a2060",
               lineHeight: 1.8,
-              marginBottom: "2rem",
+              marginBottom: "2.5rem",
+              maxWidth: "600px",
             }}
           >
             We&rsquo;ve received your payment and
@@ -265,184 +261,193 @@ export default function ThankYouPage() {
             with all the details shortly.
           </p>
 
-          {/* Info Cards */}
+          {/* Info Cards - wider on desktop */}
           <div
-            className="w-full fade-in-up-4"
+            className="w-full max-w-lg md:max-w-3xl lg:max-w-4xl fade-in-up-2"
             style={{
               background: "rgba(255,255,255,0.8)",
               backdropFilter: "blur(12px)",
               borderRadius: "20px",
-              padding: "1.5rem 1.2rem",
+              padding: "2rem 1.5rem",
               boxShadow: "0 8px 32px rgba(180,177,213,0.12), 0 2px 8px rgba(54,46,105,0.04)",
               border: "1px solid rgba(180,177,213,0.15)",
-              marginBottom: "2rem",
+              marginBottom: "2.5rem",
             }}
           >
-            {/* Next Step */}
-            <div className="flex items-start gap-4 mb-6">
-              <div
-                className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
-                style={{
-                  background: "rgba(234,226,248,0.5)",
-                  border: "1px solid rgba(180,177,213,0.25)",
-                }}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#6B5B95"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                  <line x1="16" x2="16" y1="2" y2="6" />
-                  <line x1="8" x2="8" y1="2" y2="6" />
-                  <line x1="3" x2="21" y1="10" y2="10" />
-                  <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01" />
-                </svg>
-              </div>
-              <div>
-                <h3
+            {/* Desktop: 3 columns, Mobile: stacked */}
+            <div className="flex flex-col md:flex-row md:gap-8 lg:gap-12">
+              {/* Next Step */}
+              <div className="flex items-start gap-4 mb-6 md:mb-0 md:flex-1">
+                <div
+                  className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
                   style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    color: "#c8963e",
-                    marginBottom: "3px",
+                    background: "rgba(234,226,248,0.5)",
+                    border: "1px solid rgba(180,177,213,0.25)",
                   }}
                 >
-                  Next Step
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 400,
-                    fontSize: "0.9rem",
-                    color: "#6B5B95",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Check your email for the
-                  <br />
-                  course details and schedule.
-                </p>
-              </div>
-            </div>
-
-            {/* What's Next */}
-            <div className="flex items-start gap-4 mb-6">
-              <div
-                className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
-                style={{
-                  background: "rgba(234,226,248,0.5)",
-                  border: "1px solid rgba(180,177,213,0.25)",
-                }}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#6B5B95"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
-              </div>
-              <div>
-                <h3
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    color: "#c8963e",
-                    marginBottom: "3px",
-                  }}
-                >
-                  What&rsquo;s Next?
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 400,
-                    fontSize: "0.9rem",
-                    color: "#6B5B95",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Our team will connect with you
-                  <br />
-                  within 24 hours.
-                </p>
-              </div>
-            </div>
-
-            {/* Need Help */}
-            <div className="flex items-start gap-4">
-              <div
-                className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
-                style={{
-                  background: "rgba(234,226,248,0.5)",
-                  border: "1px solid rgba(180,177,213,0.25)",
-                }}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#6B5B95"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                </svg>
-              </div>
-              <div>
-                <h3
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    color: "#c8963e",
-                    marginBottom: "3px",
-                  }}
-                >
-                  Need Help?
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 400,
-                    fontSize: "0.9rem",
-                    color: "#6B5B95",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  WhatsApp us anytime at
-                  <br />
-                  <a
-                    href="https://wa.me/917827605410"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#6B5B95"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                    <line x1="16" x2="16" y1="2" y2="6" />
+                    <line x1="8" x2="8" y1="2" y2="6" />
+                    <line x1="3" x2="21" y1="10" y2="10" />
+                    <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01" />
+                  </svg>
+                </div>
+                <div>
+                  <h3
                     style={{
-                      color: "#6B3A8A",
-                      fontWeight: 600,
-                      textDecoration: "none",
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      color: "#c8963e",
+                      marginBottom: "3px",
                     }}
                   >
-                    +91 77383 75783
-                  </a>
-                </p>
+                    Next Step
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 400,
+                      fontSize: "0.9rem",
+                      color: "#6B5B95",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    Check your email for the
+                    
+                    course details and schedule.
+                  </p>
+                </div>
+              </div>
+
+              {/* Divider for desktop */}
+              <div className="hidden md:block w-px bg-[rgba(180,177,213,0.3)]" />
+
+              {/* What's Next */}
+              <div className="flex items-start gap-4 mb-6 md:mb-0 md:flex-1">
+                <div
+                  className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{
+                    background: "rgba(234,226,248,0.5)",
+                    border: "1px solid rgba(180,177,213,0.25)",
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#6B5B95"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      color: "#c8963e",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    What&rsquo;s Next?
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 400,
+                      fontSize: "0.9rem",
+                      color: "#6B5B95",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    Our team will connect with you
+                    
+                    within 24 hours.
+                  </p>
+                </div>
+              </div>
+
+              {/* Divider for desktop */}
+              <div className="hidden md:block w-px bg-[rgba(180,177,213,0.3)]" />
+
+              {/* Need Help */}
+              <div className="flex items-start gap-4 md:flex-1">
+                <div
+                  className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{
+                    background: "rgba(234,226,248,0.5)",
+                    border: "1px solid rgba(180,177,213,0.25)",
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#6B5B95"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      color: "#c8963e",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    Need Help?
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 400,
+                      fontSize: "0.9rem",
+                      color: "#6B5B95",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    WhatsApp us anytime at
+                    <br />
+                    <a
+                      href="https://wa.me/917827605410"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "#6B3A8A",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      +91 77383 75783
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -453,7 +458,7 @@ export default function ThankYouPage() {
               style={{
                 fontFamily: "'Outfit', sans-serif",
                 fontWeight: 500,
-                fontSize: "1rem",
+                fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
                 color: "#362E69",
                 lineHeight: 1.6,
                 marginBottom: "0.3rem",
@@ -465,9 +470,8 @@ export default function ThankYouPage() {
               style={{
                 fontFamily: "'Outfit', sans-serif",
                 fontWeight: 600,
-                fontSize: "1rem",
+                fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
                 color: "#c8963e",
-                
                 lineHeight: 1.6,
               }}
             >
