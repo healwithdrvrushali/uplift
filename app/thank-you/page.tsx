@@ -224,7 +224,8 @@ export default function ThankYouPage() {
                 marginBottom: "0.3rem",
               }}
             >
-              You&rsquo;re One Step Closer
+              You&rsquo;re One Step Closer<br/>
+              to
             </h2>
             <h2
               style={{
@@ -235,7 +236,7 @@ export default function ThankYouPage() {
                 lineHeight: 1.3,
               }}
             >
-              to Your Transformation!
+               Your Transformation!
             </h2>
           </div>
 
@@ -254,7 +255,7 @@ export default function ThankYouPage() {
           >
             We&rsquo;ve received your payment and
             <br />
-            your seat is now confirmed.
+            our team will review your form.
             <br />
             You will receive a confirmation email
             <br />
@@ -325,7 +326,7 @@ export default function ThankYouPage() {
                   >
                     Check your email for the
                     
-                    course details and schedule.
+                    clarity call details and schedule.
                   </p>
                 </div>
               </div>
@@ -381,7 +382,7 @@ export default function ThankYouPage() {
                   >
                     Our team will connect with you
                     
-                    within 24 hours.
+                    within 24 - 48 hours.
                   </p>
                 </div>
               </div>
@@ -432,9 +433,7 @@ export default function ThankYouPage() {
                       lineHeight: 1.5,
                     }}
                   >
-                    WhatsApp us anytime at
-                    <br />
-                    <a
+                    WhatsApp us anytime at  <a
                       href="https://wa.me/917827605410"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -444,7 +443,7 @@ export default function ThankYouPage() {
                         textDecoration: "none",
                       }}
                     >
-                      +91 77383 75783
+                        +91 77383 75783
                     </a>
                   </p>
                 </div>
