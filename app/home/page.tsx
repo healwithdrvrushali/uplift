@@ -318,9 +318,13 @@ export default function Home() {
               {!isPlaying ? (
                 /* Thumbnail with Play Button */
                 <div
-                  className="absolute top-0 left-0 w-full h-full cursor-pointer group"
-                  onClick={handlePlay}
-                >
+  className="absolute top-0 left-0 w-full h-full cursor-pointer group"
+  onClick={handlePlay}
+  onTouchEnd={(e) => {
+    e.preventDefault();
+    handlePlay();
+  }}
+>
                   {/* YouTube Thumbnail */}
                   <img
                     src="https://img.youtube.com/vi/gNVNzNId25U/maxresdefault.jpg"
