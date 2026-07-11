@@ -122,7 +122,7 @@ const Testimonials = () => {
         {/* CTA below testimonials */}
         <div className="text-center mt-10 sm:mt-12">
           <a
-            href="https://pages.razorpay.com/pl_QzeWz5qOyKRAu3/view"
+            href="https://rzp.io/rzp/pBkF3p7t"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
@@ -135,7 +135,7 @@ const Testimonials = () => {
               color: "#ffffff",
             }}
           >
-            START YOUR TRANSFORMATION
+           Book For Clarity Call
             <svg
               width="18"
               height="18"
