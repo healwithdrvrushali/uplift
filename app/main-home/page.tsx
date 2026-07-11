@@ -6,15 +6,8 @@ import Testimonials from "../components/Testimonials";
 
 export default function MainHomePage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 60);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -117,6 +110,59 @@ export default function MainHomePage() {
     };
   }, []);
 
+  // Disable captions after video starts playing
+  useEffect(() => {
+    if (!isPlaying) return;
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+
+    const disableCaptions = () => {
+      try {
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: "setOption",
+            args: ["captions", "track", {}],
+          }),
+          "*"
+        );
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: "unloadModule",
+            args: ["captions"],
+          }),
+          "*"
+        );
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({
+            event: "command",
+            func: "unloadModule",
+            args: ["cc"],
+          }),
+          "*"
+        );
+      } catch {
+        // silently fail
+      }
+    };
+
+    const timers = [
+      setTimeout(disableCaptions, 1000),
+      setTimeout(disableCaptions, 2000),
+      setTimeout(disableCaptions, 3000),
+      setTimeout(disableCaptions, 5000),
+    ];
+
+    return () => {
+      timers.forEach(clearTimeout);
+    };
+  }, [isPlaying]);
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
   return (
     <>
       <link
@@ -141,13 +187,13 @@ export default function MainHomePage() {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fadeInLeft {
-          from { opacity: 0; transform: translateX(-40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes playPulse {
+          0%, 100% { transform: translate(-50%, -50%) scale(1); }
+          50% { transform: translate(-50%, -50%) scale(1.1); }
         }
-        @keyframes fadeInRight {
-          from { opacity: 0; transform: translateX(40px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes sparkle {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.3); }
         }
         @keyframes marqueeScroll {
           0% { transform: translateX(0); }
@@ -175,12 +221,15 @@ export default function MainHomePage() {
         .pulse-btn {
           animation: pulse 2.5s ease-in-out infinite;
         }
-        .fade-in-left { animation: fadeInLeft 0.8s ease-out forwards; }
-        .fade-in-right { animation: fadeInRight 1s ease-out 0.3s forwards; opacity: 0; }
         .fade-in-up-1 { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
         .fade-in-up-2 { animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; }
         .fade-in-up-3 { animation: fadeInUp 0.8s ease-out 0.6s forwards; opacity: 0; }
         .fade-in-up-4 { animation: fadeInUp 0.8s ease-out 0.8s forwards; opacity: 0; }
+        .fade-in-up-5 { animation: fadeInUp 0.8s ease-out 1.0s forwards; opacity: 0; }
+        .fade-in-up-6 { animation: fadeInUp 0.8s ease-out 1.2s forwards; opacity: 0; }
+        .play-pulse {
+          animation: playPulse 2s ease-in-out infinite;
+        }
         .marquee-container {
           overflow: hidden;
           white-space: nowrap;
@@ -188,18 +237,6 @@ export default function MainHomePage() {
         .marquee-content {
           display: inline-block;
           animation: marqueeScroll 45s linear infinite;
-        }
-        .nav-pill {
-          backdrop-filter: blur(12px);
-          background: rgba(255,255,255,0.85);
-          border: 1px solid rgba(200,150,62,0.2);
-          box-shadow: 0 4px 20px rgba(74,32,96,0.1);
-        }
-        .nav-pill a {
-          transition: color 0.3s ease;
-        }
-        .nav-pill a:hover {
-          color: #c8963e !important;
         }
       `}</style>
 
@@ -217,259 +254,298 @@ export default function MainHomePage() {
           style={{ zIndex: 0 }}
         />
 
-        {/* STICKY HEADER - Marquee + Navbar together, stays fixed at top */}
-        <div className="sticky top-0 z-50">
-          {/* MARQUEE STRIP AT TOP - Small font, slow speed, no stars */}
-          <div
-            className="w-full py-1.5"
-            style={{ background: "#4a2060" }}
-          >
-            <div className="marquee-container">
-              <div className="marquee-content">
+        {/* MARQUEE STRIP AT TOP */}
+        <div
+          className="w-full py-1.5 relative z-10"
+          style={{ background: "#4a2060" }}
+        >
+          <div className="marquee-container">
+            <div className="marquee-content">
+              <span
+                style={{
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 400,
+                  fontSize: "0.65rem",
+                  color: "#c8963e",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                }}
+              >
+                India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 400,
+                  fontSize: "0.65rem",
+                  color: "#c8963e",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                }}
+              >
+                India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* HERO SECTION - Centered like reference image */}
+        <section className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-4 sm:pt-6 pb-8 sm:pb-12">
+          <div className="max-w-4xl mx-auto space-y-5 sm:space-y-6">
+            {/* Badge - Happiness Coach (creative style) */}
+            <div className="fade-in-up-1">
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  background: "rgba(74,32,96,0.08)",
+                  border: "1px solid rgba(200,150,62,0.3)",
+                  color: "#c8963e",
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 600,
+                  fontSize: "0.8rem",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  padding: "8px 22px",
+                  borderRadius: "30px",
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                <span style={{ animation: "sparkle 2s ease-in-out infinite" }}>✦</span>
+                Happiness Coach
+                <span style={{ animation: "sparkle 2s ease-in-out infinite 0.5s" }}>✦</span>
+              </span>
+            </div>
+
+            {/* Main Heading - Uplift your life */}
+            <div className="fade-in-up-2">
+              <h1
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: 900,
+                  lineHeight: 1.1,
+                }}
+              >
                 <span
                   style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 400,
-                    fontSize: "0.65rem",
-                    color: "#c8963e",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
+                    display: "block",
+                    fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                    color: "#4a2060",
+                    fontFamily: "'Charm', cursive",
+                    fontWeight: 700,
+                    textShadow: "0 4px 20px rgba(239,154,126,0.3)",
+                    letterSpacing: "0.04em",
                   }}
                 >
-                  India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Uplift
+                </span>
+                <span
+                  className="shimmer-gold"
+                  style={{
+                    display: "block",
+                    fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                  }}
+                >
+                  your life
+                </span>
+              </h1>
+            </div>
+
+            {/* Description */}
+            <p
+              className="fade-in-up-3"
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontWeight: 400,
+                fontSize: "clamp(0.95rem, 2vw, 1.15rem)",
+                lineHeight: 1.7,
+                color: "#4a2060",
+                maxWidth: "560px",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              I help accomplished professionals master emotional well-being,
+              purpose, and happiness without slowing down their ambition.
+            </p>
+
+            {/* Two Buttons */}
+            <div className="fade-in-up-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
+              {/* Register Button - Primary (filled gold) */}
+              <a
+                href="/"
+                className="btn-shine pulse-btn inline-block"
+                style={{
+                  padding: "14px 32px",
+                  borderRadius: "12px",
+                  fontSize: "0.95rem",
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 700,
+                  color: "#FFFFFF",
+                  background: "linear-gradient(90deg, #c8963e 0%, #e8c170 30%, #c8963e 50%, #e8c170 70%, #c8963e 100%)",
+                  border: "none",
+                  boxShadow: "0 8px 30px rgba(239,154,126,0.4), 0 2px 8px rgba(212,96,62,0.25)",
+                  transition: "all 0.3s ease",
+                  letterSpacing: "0.03em",
+                  textDecoration: "none",
+                  display: "inline-block",
+                  minWidth: "220px",
+                  textAlign: "center",
+                }}
+              >
+                Register for the training now
+              </a>
+
+              {/* Uplift Book Button - Secondary (outline) */}
+              
+            </div>
+
+            {/* 3 Stats */}
+            <div className="fade-in-up-5 flex flex-row items-center justify-center gap-6 sm:gap-12 pt-6">
+              {/* Stat 1 */}
+              <div className="flex flex-col items-center">
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontWeight: 900,
+                    fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+                    color: "#c8963e",
+                  }}
+                >
+                  3x
                 </span>
                 <span
                   style={{
                     fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 400,
-                    fontSize: "0.65rem",
-                    color: "#c8963e",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
+                    fontWeight: 500,
+                    fontSize: "0.8rem",
+                    color: "#4a2060",
+                    opacity: 0.8,
+                    textAlign: "center",
                   }}
                 >
-                  India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; India&apos;s No 1 Happiness Coach &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Business<br />Growth
+                </span>
+              </div>
+
+              {/* Divider */}
+              <div style={{ width: "1px", height: "50px", background: "rgba(74,32,96,0.15)" }}></div>
+
+              {/* Stat 2 */}
+              <div className="flex flex-col items-center">
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontWeight: 900,
+                    fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+                    color: "#c8963e",
+                  }}
+                >
+                  200+
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontWeight: 500,
+                    fontSize: "0.8rem",
+                    color: "#4a2060",
+                    opacity: 0.8,
+                    textAlign: "center",
+                  }}
+                >
+                  Businesses<br />Transformed
+                </span>
+              </div>
+
+              {/* Divider */}
+              <div style={{ width: "1px", height: "50px", background: "rgba(74,32,96,0.15)" }}></div>
+
+              {/* Stat 3 */}
+              <div className="flex flex-col items-center">
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontWeight: 900,
+                    fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+                    color: "#c8963e",
+                  }}
+                >
+                  26+
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontWeight: 500,
+                    fontSize: "0.8rem",
+                    color: "#4a2060",
+                    opacity: 0.8,
+                    textAlign: "center",
+                  }}
+                >
+                  Years of<br />Experience
                 </span>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* NAVIGATION BAR - Dr Vrushali + centered pill nav in same line */}
-          <nav className="flex items-center justify-center py-3 px-4 sm:px-8 gap-4 sm:gap-6"
-            style={{ transition: "all 0.3s ease" }}
-          >
-            {/* Dr Vrushali - shrinks on scroll */}
-            <span
+        {/* VIDEO SECTION - Same style as home page */}
+        <section className="relative z-10 px-3 sm:px-6 pb-8 sm:pb-12 fade-in-up-6">
+          <div className="max-w-4xl mx-auto">
+            <div
+              className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl"
               style={{
-                fontFamily: "'Great Vibes', cursive",
-                fontWeight: 400,
-                fontSize: scrolled ? "1.3rem" : "2rem",
-                color: "#4a2060",
-                lineHeight: 1.2,
-                transition: "font-size 0.3s ease",
-                whiteSpace: "nowrap",
+                paddingTop: "56.25%",
+                boxShadow:
+                  "0 20px 60px rgba(74,32,96,0.2), 0 8px 24px rgba(239,154,126,0.15)",
               }}
             >
-              Dr Vrushali
-            </span>
-
-            {/* Nav links - centered pill shape */}
-            <div className="nav-pill rounded-full px-5 sm:px-8 py-2.5 flex items-center justify-center gap-5 sm:gap-8">
-              <a
-                href="#"
-                style={{
-                  fontFamily: "'Outfit', sans-serif",
-                  fontWeight: 600,
-                  fontSize: "0.95rem",
-                  color: "#c8963e",
-                  textDecoration: "none",
-                }}
-              >
-                Home
-              </a>
-              <a
-                href="#about"
-                style={{
-                  fontFamily: "'Outfit', sans-serif",
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  color: "#4a2060",
-                  textDecoration: "none",
-                }}
-              >
-                About
-              </a>
-              <a
-                href="#programs"
-                style={{
-                  fontFamily: "'Outfit', sans-serif",
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  color: "#4a2060",
-                  textDecoration: "none",
-                }}
-              >
-                Programs
-              </a>
-              <a
-                href="#testimonial"
-                style={{
-                  fontFamily: "'Outfit', sans-serif",
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  color: "#4a2060",
-                  textDecoration: "none",
-                }}
-              >
-                Testimonial
-              </a>
-            </div>
-          </nav>
-        </div>
-
-        {/* HERO SECTION */}
-        <section className="relative z-10 px-4 sm:px-6 lg:px-12 pt-8 sm:pt-12 pb-10 sm:pb-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* LEFT SIDE - Text Content */}
-              <div className="space-y-5 sm:space-y-6 fade-in-left">
-                {/* Badge - Happiness Coach */}
-                <div className="fade-in-up-1">
-                  <span
-                    style={{
-                      display: "inline-block",
-                      background: "linear-gradient(135deg, #c8963e, #e8c170)",
-                      color: "#ffffff",
-                      fontFamily: "'Outfit', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "0.75rem",
-                      letterSpacing: "0.25em",
-                      textTransform: "uppercase",
-                      padding: "6px 18px",
-                      borderRadius: "20px",
-                    }}
-                  >
-                    ✦ Happiness Coach ✦
-                  </span>
-                </div>
-
-                {/* Main Heading */}
-                <div className="fade-in-up-2">
-                  <h2
-                    style={{
-                      fontFamily: "'Playfair Display', serif",
-                      fontWeight: 900,
-                      lineHeight: 1.1,
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "block",
-                        fontSize: "clamp(2.2rem, 5vw, 5rem)",
-                        color: "#4a2060",
-                        fontFamily: "'Charm', cursive",
-                        fontWeight: 700,
-                        textShadow: "0 4px 20px rgba(239,154,126,0.3)",
-                        letterSpacing: "0.06em",
-                      }}
-                    >
-                      Uplift
-                    </span>
-                    <span
-                      className="shimmer-gold"
-                      style={{
-                        display: "block",
-                        fontSize: "clamp(2.2rem, 5vw, 5rem)",
-                      }}
-                    >
-                      your life
-                    </span>
-                  </h2>
-                </div>
-
-                {/* Description */}
-                <p
-                  className="fade-in-up-3"
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontWeight: 400,
-                    fontSize: "clamp(0.95rem, 1.8vw, 1.15rem)",
-                    lineHeight: 1.7,
-                    color: "#4a2060",
-                    maxWidth: "520px",
-                  }}
-                >
-                  I help accomplished professionals master emotional well-being,
-                  purpose, and happiness without slowing down their ambition.
-                </p>
-
-                {/* CTA Button */}
-                <div className="fade-in-up-4 pt-2">
-                  <a
-                    href="/"
-                    className="btn-shine pulse-btn inline-block"
-                    style={{
-                      padding: "16px 40px",
-                      borderRadius: "14px",
-                      fontSize: "1.1rem",
-                      fontFamily: "'Outfit', sans-serif",
-                      fontWeight: 700,
-                      color: "#FFFFFF",
-                      background: "linear-gradient(90deg, #c8963e 0%, #e8c170 30%, #c8963e 50%, #e8c170 70%, #c8963e 100%)",
-                      border: "none",
-                      boxShadow: "0 8px 30px rgba(239,154,126,0.4), 0 2px 8px rgba(212,96,62,0.25)",
-                      transition: "all 0.3s ease",
-                      letterSpacing: "0.03em",
-                      textDecoration: "none",
-                      display: "inline-block",
-                    }}
-                  >
-                    Register
-                  </a>
-                </div>
-              </div>
-
-              {/* RIGHT SIDE - Image */}
-              <div className="flex flex-col items-center lg:items-end fade-in-right">
+              {!isPlaying ? (
+                /* Thumbnail with Play Button */
                 <div
-                  className="relative"
-                  style={{
-                    maxWidth: "480px",
-                    width: "100%",
-                  }}
+                  className="absolute top-0 left-0 w-full h-full cursor-pointer group"
+                  onClick={handlePlay}
                 >
+                  {/* YouTube Thumbnail */}
                   <img
-                    src="/dr_vrushali.jpg"
-                    alt="Dr. Vrushali Saraswat"
-                    className="w-full h-auto rounded-2xl shadow-2xl object-cover"
-                    style={{
-                      boxShadow:
-                        "0 25px 60px rgba(74,32,96,0.2), 0 10px 30px rgba(200,150,62,0.15)",
-                    }}
+                    src="https://img.youtube.com/vi/gNVNzNId25U/maxresdefault.jpg"
+                    alt="Video thumbnail"
+                    className="w-full h-full object-cover rounded-xl sm:rounded-2xl"
                   />
-                  {/* Decorative accent */}
+                  {/* Dark overlay */}
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all duration-300 rounded-xl sm:rounded-2xl" />
+                  {/* Play Button */}
                   <div
-                    className="absolute -bottom-3 -right-3 w-full h-full rounded-2xl -z-10"
+                    className="play-pulse absolute top-1/2 left-1/2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
                     style={{
-                      border: "3px solid rgba(200,150,62,0.3)",
+                      background: "linear-gradient(135deg, #c8963e, #e8c170)",
+                      boxShadow: "0 8px 32px rgba(200,150,62,0.5)",
                     }}
-                  ></div>
+                  >
+                    <svg
+                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white ml-1"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
                 </div>
-                {/* Text below image */}
-                <p
-                  className="mt-6 text-center lg:text-right"
+              ) : (
+                /* YouTube iframe - plays with sound */
+                <iframe
+                  ref={iframeRef}
+                  src="https://www.youtube.com/embed/gNVNzNId25U?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&iv_load_policy=3&cc_load_policy=0&cc_lang_pref=&disablekb=0&fs=1&playsinline=1&loop=1&playlist=gNVNzNId25U&enablejsapi=1"
+                  title="Video"
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  className="absolute top-0 left-0 w-full h-full"
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontWeight: 700,
-                    fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
-                    color: "#6B3A8A",
-                    fontStyle: "italic",
-                    letterSpacing: "0.02em",
+                    border: "none",
+                    borderRadius: "12px",
                   }}
-                >
-                  Doctor by Profession, Healer by Choice!
-                </p>
-              </div>
+                />
+              )}
             </div>
           </div>
         </section>
