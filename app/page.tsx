@@ -2,6 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 
+interface FormErrors {
+  name?: string;
+  email?: string;
+  mobile?: string;
+  city?: string;
+}
+
 export default function ObtainPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -9,6 +16,8 @@ export default function ObtainPage() {
     mobile: "",
     city: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [visibleLines, setVisibleLines] = useState(0);
@@ -142,12 +151,94 @@ export default function ObtainPage() {
     };
   }, []);
 
+  const validateField = (name: string, value: string): string | undefined => {
+    switch (name) {
+      case "name": {
+        const trimmed = value.trim();
+        if (!trimmed) return "Name is required";
+        if (trimmed.length < 2) return "Name must be at least 2 characters";
+        if (!/^[a-zA-Z\s.]+$/.test(trimmed)) return "Name should only contain letters and spaces";
+        return undefined;
+      }
+      case "email": {
+        const trimmed = value.trim();
+        if (!trimmed) return "Email is required";
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(trimmed)) return "Enter a valid email (e.g., roy@gmail.com)";
+        return undefined;
+      }
+      case "mobile": {
+        const digitsOnly = value.replace(/\D/g, "");
+        if (!digitsOnly) return "Mobile number is required";
+        if (digitsOnly.length !== 10) return "Mobile number must be exactly 10 digits";
+        if (!/^[6-9]/.test(digitsOnly)) return "Enter a valid Indian mobile number";
+        return undefined;
+      }
+      case "city": {
+        const trimmed = value.trim();
+        if (!trimmed) return "Location is required";
+        if (trimmed.length < 2) return "Location must be at least 2 characters";
+        if (!/^[a-zA-Z\s,.-]+$/.test(trimmed)) return "Location should only contain letters and spaces";
+        return undefined;
+      }
+      default:
+        return undefined;
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+    let isValid = true;
+
+    (Object.keys(formData) as Array<keyof typeof formData>).forEach((key) => {
+      const error = validateField(key, formData[key]);
+      if (error) {
+        newErrors[key] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // For mobile field, only allow digits
+    if (name === "mobile") {
+      const digitsOnly = value.replace(/\D/g, "").slice(0, 10);
+      setFormData({ ...formData, [name]: digitsOnly });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+
+    // Clear error on change if field was touched
+    if (touched[name]) {
+      const validationValue = name === "mobile" ? value.replace(/\D/g, "").slice(0, 10) : value;
+      const error = validateField(name, validationValue);
+      setErrors((prev) => ({ ...prev, [name]: error }));
+    }
+  };
+
+  const handleBlur = (fieldName: string) => {
+    setFocusedField(null);
+    setTouched((prev) => ({ ...prev, [fieldName]: true }));
+    const error = validateField(fieldName, formData[fieldName as keyof typeof formData]);
+    setErrors((prev) => ({ ...prev, [fieldName]: error }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Mark all fields as touched
+    setTouched({ name: true, email: true, mobile: true, city: true });
+
+    // Validate all fields
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     const GOOGLE_SHEET_URL =
@@ -293,11 +384,11 @@ export default function ObtainPage() {
               fontWeight: 500,
               lineHeight: 1.5,
               marginBottom: "0.6rem",
-              ...revealStyle(1),
+              
             }}
           >
             If you are a{" "}
-            <span className="shimmer-text" style={{ fontWeight: 500 }}>CXO, founder, Doctor</span> Or{" "} <span className="shimmer-text" style={{ fontWeight: 500 }}>CEO</span>{" "}
+            <span className="shimmer-text" style={{ fontWeight: 500 }}>CXO, Founder, Doctor</span> Or{" "} <span className="shimmer-text" style={{ fontWeight: 500 }}>CEO</span>{" "}
             of your life.
           </p>
 
@@ -308,7 +399,7 @@ export default function ObtainPage() {
               fontFamily: "'Outfit', sans-serif",
               fontWeight: 600,
               marginBottom: "1.2rem",
-              ...revealStyle(2),
+              
             }}
           >
             This page is for you.
@@ -322,7 +413,7 @@ export default function ObtainPage() {
               fontWeight: 700,
               lineHeight: 1.5,
               marginBottom: "0.8rem",
-              ...revealStyle(3),
+             
             }}
           >
             We help people resolve{" "}
@@ -339,7 +430,7 @@ export default function ObtainPage() {
     color: "#362E69",
     fontFamily: "'Outfit', sans-serif",
     fontWeight: 300,
-    ...revealStyle(4),
+   
   }}
 >
   Risk free program. Money Back Guarantee.
@@ -362,10 +453,18 @@ export default function ObtainPage() {
                   value={formData.name}
                   onChange={handleChange}
                   onFocus={() => setFocusedField("name")}
-                  onBlur={() => setFocusedField(null)}
+                  onBlur={() => handleBlur("name")}
                   required
-                  style={getInputStyle("name")}
+                  style={{
+                    ...getInputStyle("name"),
+                    ...(errors.name && touched.name ? { border: "2px solid #e53e3e" } : {}),
+                  }}
                 />
+                {errors.name && touched.name && (
+                  <p style={{ color: "#e53e3e", fontSize: "0.75rem", marginTop: "4px", fontFamily: "'Outfit', sans-serif", fontWeight: 500, paddingLeft: "4px" }}>
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
               {/* Email */}
@@ -383,10 +482,18 @@ export default function ObtainPage() {
                   value={formData.email}
                   onChange={handleChange}
                   onFocus={() => setFocusedField("email")}
-                  onBlur={() => setFocusedField(null)}
+                  onBlur={() => handleBlur("email")}
                   required
-                  style={getInputStyle("email")}
+                  style={{
+                    ...getInputStyle("email"),
+                    ...(errors.email && touched.email ? { border: "2px solid #e53e3e" } : {}),
+                  }}
                 />
+                {errors.email && touched.email && (
+                  <p style={{ color: "#e53e3e", fontSize: "0.75rem", marginTop: "4px", fontFamily: "'Outfit', sans-serif", fontWeight: 500, paddingLeft: "4px" }}>
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               {/* Phone */}
@@ -399,14 +506,23 @@ export default function ObtainPage() {
                 <input
                   type="tel"
                   name="mobile"
-                  placeholder="Phone"
+                  placeholder="Mobile Number"
                   value={formData.mobile}
                   onChange={handleChange}
                   onFocus={() => setFocusedField("mobile")}
-                  onBlur={() => setFocusedField(null)}
+                  onBlur={() => handleBlur("mobile")}
                   required
-                  style={getInputStyle("mobile")}
+                  maxLength={10}
+                  style={{
+                    ...getInputStyle("mobile"),
+                    ...(errors.mobile && touched.mobile ? { border: "2px solid #e53e3e" } : {}),
+                  }}
                 />
+                {errors.mobile && touched.mobile && (
+                  <p style={{ color: "#e53e3e", fontSize: "0.75rem", marginTop: "4px", fontFamily: "'Outfit', sans-serif", fontWeight: 500, paddingLeft: "4px" }}>
+                    {errors.mobile}
+                  </p>
+                )}
               </div>
 
               {/* Location */}
@@ -424,10 +540,18 @@ export default function ObtainPage() {
                   value={formData.city}
                   onChange={handleChange}
                   onFocus={() => setFocusedField("city")}
-                  onBlur={() => setFocusedField(null)}
+                  onBlur={() => handleBlur("city")}
                   required
-                  style={getInputStyle("city")}
+                  style={{
+                    ...getInputStyle("city"),
+                    ...(errors.city && touched.city ? { border: "2px solid #e53e3e" } : {}),
+                  }}
                 />
+                {errors.city && touched.city && (
+                  <p style={{ color: "#e53e3e", fontSize: "0.75rem", marginTop: "4px", fontFamily: "'Outfit', sans-serif", fontWeight: 500, paddingLeft: "4px" }}>
+                    {errors.city}
+                  </p>
+                )}
               </div>
 
               {/* Submit */}
@@ -453,6 +577,7 @@ export default function ObtainPage() {
                   letterSpacing: "0.03em",
                 }}
               >
+
                 {submitted ? "Submitted! Redirecting..." : isSubmitting ? "Submitting..." : "Register For The Training Now"}
               </button>
             </div>
@@ -471,7 +596,6 @@ export default function ObtainPage() {
 <a href="/refund-policy" className="text-[#6B5B95] hover:text-[#4a2060] transition-colors text-[10px] sm:text-sm font-medium underline underline-offset-2">
   Refund Policy
 </a>
-
           </div>
           <p className="text-center text-[10px] sm:text-xs text-[#6B5B95]/50 mt-3">
             © 2025 Dr. Vrushali Saraswat | Happiness Holistic Clinic. All Rights Reserved.
