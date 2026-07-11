@@ -253,7 +253,7 @@ const Programs = () => {
         {/* CTA below programs */}
         <div className="text-center mt-10 sm:mt-14">
           <a
-            href="https://pages.razorpay.com/pl_QzeWz5qOyKRAu3/view"
+            href="/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#4a2060] text-white font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
