@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Dr. Vrushali Saraswat | Happiness Holistic Clinic",
   description:
     "Doctor by Profession. Healer by Choice. Helping accomplished professionals master emotional well-being, purpose, and happiness.",
+   icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
