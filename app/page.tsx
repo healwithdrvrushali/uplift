@@ -439,24 +439,7 @@ export default function MainHomePage() {
         </section>
 
         {/* VIDEO SECTION - HLS Stream */}
-        <section className="relative z-10 px-3 sm:px-6 pb-8 sm:pb-12 fade-in-up-6">
-          <div className="max-w-4xl mx-auto">
-            <div
-              className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl"
-              style={{
-                boxShadow:
-                  "0 20px 60px rgba(74,32,96,0.2), 0 8px 24px rgba(239,154,126,0.15)",
-              }}
-            >
-              <HlsPlayer
-                src="http://media.drvrushali.com/stream.m3u8"
-                loop={true}
-                controls={true}
-                className="rounded-xl sm:rounded-2xl"
-              />
-            </div>
-          </div>
-        </section>
+       
 
         {/* PROGRAMS SECTION */}
         <Programs />
