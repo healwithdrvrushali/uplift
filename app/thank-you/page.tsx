@@ -112,9 +112,13 @@ export default function ThankYouPage() {
           0%, 50% { opacity: 0.4; transform: scale(0.8); }
           50% { opacity: 1; transform: scale(1.2); }
         }
-        @keyframes floatStar {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-6px) rotate(10deg); }
+        @keyframes btnShine {
+          0% { left: -100%; }
+          100% { left: 200%; }
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); box-shadow: 0 8px 30px rgba(200,150,62,0.4); }
+          50% { transform: scale(1.02); box-shadow: 0 12px 40px rgba(200,150,62,0.6); }
         }
         .fade-in-up-1 { animation: fadeInUp 0.8s ease-out forwards; }
         .fade-in-up-2 { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
@@ -124,6 +128,20 @@ export default function ThankYouPage() {
         .scale-in { animation: scaleIn 0.6s ease-out 0.3s forwards; opacity: 0; }
         .sparkle-1 { animation: sparkle 2s ease-in-out infinite; }
         .sparkle-2 { animation: sparkle 2s ease-in-out 0.5s infinite; }
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+          animation: btnShine 3s ease-in-out infinite;
+        }
+        .pulse-btn {
+          animation: pulse 2.5s ease-in-out infinite;
+        }
       `}</style>
 
       <div
@@ -139,7 +157,7 @@ export default function ThankYouPage() {
           style={{ zIndex: 0 }}
         />
 
-        {/* Main content - full width on desktop, constrained on mobile */}
+        {/* Main content */}
         <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center px-6 py-12">
           {/* Thank You Title */}
           <h1
@@ -182,7 +200,7 @@ export default function ThankYouPage() {
           />
 
           {/* Checkmark Circle */}
-          <div className="relative scale-in" style={{ marginBottom: "2rem" }}>
+          <div className="relative scale-in" style={{ marginBottom: "1.3rem" }}>
             <span className="absolute -top-6 right-0 text-[#c8963e] sparkle-2" style={{ fontSize: "0.8rem" }}>✦</span>
             <span className="absolute top-4 -right-8 text-[#c8963e] sparkle-1" style={{ fontSize: "0.9rem" }}>✦</span>
             <span className="absolute top-0 -left-8 text-[#c8963e] sparkle-2" style={{ fontSize: "0.7rem" }}>✦</span>
@@ -190,7 +208,7 @@ export default function ThankYouPage() {
             <span className="absolute bottom-4 -right-6 text-[#c8963e] sparkle-1" style={{ fontSize: "0.8rem" }}>✦</span>
 
             <div
-              className="w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center"
+              className="w-30 h-30 md:w-32 md:h-32 rounded-full flex items-center justify-center"
               style={{
                 background: "linear-gradient(135deg, #c8963e 0%, #e8c170 40%, #d4a84e 70%, #c8963e 100%)",
                 boxShadow: "0 12px 40px rgba(200,150,62,0.3), 0 4px 16px rgba(200,150,62,0.15)",
@@ -249,7 +267,7 @@ export default function ThankYouPage() {
               fontSize: "clamp(0.95rem, 1.5vw, 1.2rem)",
               color: "#4a2060",
               lineHeight: 1.8,
-              marginBottom: "2.5rem",
+              marginBottom: "2rem",
               maxWidth: "600px",
             }}
           >
@@ -262,7 +280,43 @@ export default function ThankYouPage() {
             with all the details shortly.
           </p>
 
-          {/* Info Cards - wider on desktop */}
+          {/* Fill the Google Form Button */}
+          <div className="text-center fade-in-up-4" style={{ marginBottom: "2.5rem" }}>
+            <a
+              href="https://docs.google.com/document/d/13ZUR6xd90x3f8fz7pbha-vE5xk9UCBfi9JFHHHQkjxQ/edit?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-shine pulse-btn inline-flex items-center gap-3 font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: "clamp(0.95rem, 2vw, 1.15rem)",
+                fontWeight: 700,
+                letterSpacing: "0.03em",
+                background: "linear-gradient(135deg, #c8963e, #e8c170)",
+                color: "#ffffff",
+              }}
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+                <path d="M14 2v6h6" />
+                <path d="M16 13H8" />
+                <path d="M16 17H8" />
+                <path d="M10 9H8" />
+              </svg>
+              Apply to Work with Dr. Vrushali
+            </a>
+          </div>
+
+          {/* Info Cards */}
           <div
             className="w-full max-w-lg md:max-w-3xl lg:max-w-4xl fade-in-up-2"
             style={{
@@ -325,7 +379,6 @@ export default function ThankYouPage() {
                     }}
                   >
                     Check your email for the
-                    
                     clarity call details and schedule.
                   </p>
                 </div>
@@ -381,7 +434,6 @@ export default function ThankYouPage() {
                     }}
                   >
                     Our team will connect with you
-                    
                     within 24 - 48 hours.
                   </p>
                 </div>
