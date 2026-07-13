@@ -283,7 +283,7 @@ export default function ThankYouPage() {
           {/* Fill the Google Form Button */}
           <div className="text-center fade-in-up-4" style={{ marginBottom: "2.5rem" }}>
             <a
-              href="https://docs.google.com/document/d/13ZUR6xd90x3f8fz7pbha-vE5xk9UCBfi9JFHHHQkjxQ/edit?usp=sharing"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               className="btn-shine pulse-btn inline-flex items-center gap-3 font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
