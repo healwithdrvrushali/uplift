@@ -388,7 +388,7 @@ export default function ObtainPage() {
             }}
           >
             If you are a{" "}
-            <span className="shimmer-text" style={{ fontWeight: 500 }}>CXO, founder, Doctor</span> Or{" "} <span className="shimmer-text" style={{ fontWeight: 500 }}>CEO</span>{" "}
+            <span className="shimmer-text" style={{ fontWeight: 500 }}>CXO, Founder, Doctor</span> Or{" "} <span className="shimmer-text" style={{ fontWeight: 500 }}>CEO</span>{" "}
             of your life.
           </p>
 
