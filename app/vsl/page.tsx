@@ -259,19 +259,18 @@ export default function VSLPage() {
                 src="http://media.drvrushali.com/stream.m3u8"
                 loop={true}
                 controls={true}
+                autoPlay={true}
                 className="rounded-xl sm:rounded-2xl"
               />
             </div>
           </div>
         </section>
 
-        {/* APPLY NOW BUTTON */}
+        {/* APPLY NOW BUTTON - Opens Razorpay in same tab */}
         <section className="relative z-10 px-4 sm:px-6 pb-8 sm:pb-12 text-center">
           <a
             href="https://rzp.io/rzp/pBkF3p7t"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-shine pulse-btn inline-block bg-[#c8963e] text-white font-semibold px-7 sm:px-10 py-3 sm:py-4 rounded-full shadow-lg hover:bg-[#b5842f] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+            className="btn-shine pulse-btn inline-block bg-[#c8963e] text-white font-semibold px-7 sm:px-10 py-3 sm:py-4 rounded-full shadow-lg hover:bg-[#b5842f] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer no-underline"
             style={{ fontSize: "clamp(0.95rem, 2.5vw, 1.2rem)", letterSpacing: "0.03em" }}
           >
             BOOK CLARITY CALL
