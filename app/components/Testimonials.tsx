@@ -14,6 +14,29 @@ const Testimonials = () => {
     },
   ];
 
+  const shorts = [
+    {
+      id: 1,
+      title: "Client Success Story 1",
+      videoId: "VKZlQl22MTk",
+    },
+    {
+      id: 2,
+      title: "Client Success Story 2",
+      videoId: "2OCxvryuTJs",
+    },
+    {
+      id: 3,
+      title: "Client Success Story 3",
+      videoId: "pnmOdOMoz4U",
+    },
+    {
+      id: 4,
+      title: "Client Success Story 4",
+      videoId: "1EQ1_DIfPDw",
+    },
+  ];
+
   return (
     <section
       id="testimonials"
@@ -113,6 +136,46 @@ const Testimonials = () => {
                   style={{ fontFamily: "'Outfit', sans-serif" }}
                 >
                   {testimonial.title}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Shorts Grid - Continuous flow */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6 sm:mt-8">
+          {shorts.map((short) => (
+            <div
+              key={short.id}
+              className="rounded-2xl overflow-hidden"
+              style={{
+                background: "rgba(255,255,255,0.85)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(200,150,62,0.15)",
+                boxShadow: "0 8px 30px rgba(74,32,96,0.08)",
+                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+            >
+              <div className="relative" style={{ aspectRatio: "9/16" }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${short.videoId}`}
+                  title={short.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                ></iframe>
+              </div>
+              <div
+                className="py-2 px-3"
+                style={{
+                  background: "linear-gradient(135deg, #4a2060, #6B3A8A)",
+                }}
+              >
+                <p
+                  className="text-white text-xs sm:text-sm font-medium text-center"
+                  style={{ fontFamily: "'Outfit', sans-serif" }}
+                >
+                  {short.title}
                 </p>
               </div>
             </div>
