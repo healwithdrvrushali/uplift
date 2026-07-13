@@ -259,7 +259,7 @@ export default function VSLPage() {
                 src="http://media.drvrushali.com/stream.m3u8"
                 loop={true}
                 controls={true}
-                autoPlay={true}
+                autoPlay={false}
                 className="rounded-xl sm:rounded-2xl"
               />
             </div>
