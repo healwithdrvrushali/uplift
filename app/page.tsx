@@ -237,6 +237,15 @@ export default function MainHomePage() {
           </div>
         </div>
 
+        {/* LOGO */}
+        <div className="relative z-10 flex justify-center pt-4 sm:pt-6">
+          <img
+            src="/logo.png"
+            alt="Dr. Vrushali Saraswat Logo"
+            className="h-14 sm:h-18 md:h-20 w-auto"
+          />
+        </div>
+
         {/* HERO SECTION - Centered like reference image */}
         <section className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-4 sm:pt-6 pb-8 sm:pb-12">
           <div className="max-w-4xl mx-auto space-y-5 sm:space-y-6">
@@ -439,7 +448,7 @@ export default function MainHomePage() {
         </section>
 
         {/* VIDEO SECTION - HLS Stream */}
-       
+        
 
         {/* PROGRAMS SECTION */}
         <Programs />
