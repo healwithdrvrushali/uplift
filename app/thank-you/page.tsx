@@ -310,7 +310,7 @@ export default function ThankYouPage() {
                 <path d="M16 17H8" />
                 <path d="M10 9H8" />
               </svg>
-              Apply to Work with Dr. Vrushali
+              Personalize Your Clarity Call
             </a>
           </div>
 
