@@ -106,8 +106,9 @@ const Programs = () => {
               lineHeight: 1.7,
             }}
           >
-            Choose the journey that resonates with your soul. Each program is
-            crafted to unlock your highest potential.
+            Choose the journey that resonates with your soul. <br/>
+            Each program is crafted to unlock your highest potential.
+            
           </p>
         </div>
 
@@ -253,10 +254,8 @@ const Programs = () => {
         {/* CTA below programs */}
         <div className="text-center mt-10 sm:mt-14">
           <a
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#4a2060] text-white font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+            href="/optin"
+            className="inline-flex items-center gap-2 bg-[#c8963e] text-white font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
             style={{
               fontFamily: "'Outfit', sans-serif",
               fontSize: "clamp(0.9rem, 2vw, 1.05rem)",
