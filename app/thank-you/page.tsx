@@ -284,8 +284,6 @@ export default function ThankYouPage() {
           <div className="text-center fade-in-up-4" style={{ marginBottom: "2.5rem" }}>
             <a
               href="https://forms.gle/ZushxGD76NmgoZw48"
-              target="_blank"
-              rel="noopener noreferrer"
               className="btn-shine pulse-btn inline-flex items-center gap-3 font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
               style={{
                 fontFamily: "'Outfit', sans-serif",
