@@ -15,11 +15,13 @@ export function buildEmailTemplate(
     bodyHtml += `<p style="font-family:'Poppins',Arial,sans-serif; font-size:16px; line-height:27px; color:#544762; margin:0 0 18px 0;">${paragraph.trim()}</p>`;
   }
 
-  const quoteSection = quote
+  // Strip leading/trailing quotes from quote to avoid double-quoting
+  const cleanQuote = quote.replace(/^[""\u201C\u201D]+|[""\u201C\u201D]+$/g, "").trim();
+  const quoteSection = cleanQuote
     ? `<tr><td style="padding: 30px 44px 6px 44px;" class="fluid-padding">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
         <td style="border-left:3px solid #d9b355; padding: 4px 0 4px 22px;">
-        <p style="font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:20px; line-height:29px; color:#5c2f78; margin:0;">"${quote}"</p>
+        <p style="font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:20px; line-height:29px; color:#5c2f78; margin:0;">\u201C${cleanQuote}\u201D</p>
         </td></tr></table></td></tr>`
     : "";
 
@@ -100,7 +102,7 @@ Book Your Clarity Call →</a>
 <!-- FOOTER -->
 <tr><td align="center" style="padding: 26px 30px 32px 30px; background-color:#fffdfb;">
 <p style="font-family:'Poppins',Arial,sans-serif; font-size:12px; color:#9a8ba8; margin:0 0 10px 0;">India's No.1 Happiness Coach · Uplift Your Life</p>
-<p style="font-family:'Poppins',Arial,sans-serif; font-size:11px; color:#b6abc2; margin:0;">You're receiving this because you signed up for weekly reflections.</p>
+<p style="font-family:'Poppins',Arial,sans-serif; font-size:11px; color:#b6abc2; margin:0;">For any assistance, feel free to contact us on WhatsApp +91 77383 75783</p>
 </td></tr>
 
 </table></td></tr></table></body></html>`;
