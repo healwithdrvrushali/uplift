@@ -9,7 +9,7 @@ export default function VSLPage() {
     "Book a call and fill out the short application in detail",
     "We'll review your application and speak with you to see if you're a good fit",
     "Limited members will be accepted",
-    "The Batch will starts this Month",
+    "The Batch will start this Month",
     "Serious participants apply only. Application fees is non refundable",
     "Limited slots left!",
   ];
