@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     for (const recipient of payload.recipients) {
       try {
         await transporter.sendMail({
-          from: `"Dr. Vrushali" <${process.env.SMTP_USER}>`,
+          from: `"Dr. Vrushali Saraswat" <${process.env.SMTP_USER}>`,
           to: recipient,
           subject: payload.subject,
           html: htmlBody,
