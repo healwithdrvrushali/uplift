@@ -256,7 +256,7 @@ export default function VSLPage() {
               }}
             >
               <HlsPlayer
-                src="http://videos.drvrushali.com/stream.m3u8"
+                src="https://videos.drvrushali.com/stream.m3u8"
                 loop={true}
                 controls={true}
                 
