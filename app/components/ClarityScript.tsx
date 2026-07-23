@@ -15,17 +15,16 @@ export default function ClarityScript() {
   if (!isProduction) return null;
 
   return (
-    
-
     <Script id="microsoft-clarity" strategy="afterInteractive">
-      window.addEventListener('error', function(e) {
-  if (e.message && e.message.includes('webkit.messageHandlers')) {
-    e.stopImmediatePropagation();
-    e.preventDefault();
-    return true;
-  }
-}, true);
       {`
+        window.addEventListener('error', function(e) {
+          if (e.message && e.message.includes('webkit.messageHandlers')) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
