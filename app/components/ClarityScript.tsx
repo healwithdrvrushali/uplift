@@ -15,6 +15,16 @@ export default function ClarityScript() {
   if (!isProduction) return null;
 
   return (
+    <script>
+window.addEventListener('error', function(e) {
+  if (e.message && e.message.includes('webkit.messageHandlers')) {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    return true;
+  }
+}, true);
+</script>
+
     <Script id="microsoft-clarity" strategy="afterInteractive">
       {`
         (function(c,l,a,r,i,t,y){
